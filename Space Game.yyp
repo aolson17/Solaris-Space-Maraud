@@ -607,6 +607,14 @@
             }
         },
         {
+            "Key": "3046b766-1c9c-4f4c-ba67-f74f1c230c06",
+            "Value": {
+                "id": "183f7d43-d455-4c83-a562-fbf282cabbbb",
+                "resourcePath": "shaders\\shader0\\shader0.yy",
+                "resourceType": "GMShader"
+            }
+        },
+        {
             "Key": "34da299d-1297-44db-8d00-66d3bf584052",
             "Value": {
                 "id": "32149477-3344-45df-97bc-139901145324",
@@ -1180,6 +1188,14 @@
                 "id": "55a4df94-0945-4d64-9964-528061868b1e",
                 "resourcePath": "objects\\obj_elaser\\obj_elaser.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "6746d3ff-7f19-4396-b061-e95b2adac894",
+            "Value": {
+                "id": "8b7970f9-cfad-4526-8e16-0836e453a4db",
+                "resourcePath": "timelines\\timeline0\\timeline0.yy",
+                "resourceType": "GMTimeline"
             }
         },
         {
@@ -2559,6 +2575,14 @@
             }
         },
         {
+            "Key": "e11d5dd9-083d-4f8a-a2a2-614a6f6e68ae",
+            "Value": {
+                "id": "96f6dce6-0332-441e-9da7-e9b4056d218d",
+                "resourcePath": "sprites\\sprite1h\\sprite1h.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "e13d1954-2c6b-408e-9a5e-1421c76f53c3",
             "Value": {
                 "id": "ace26ef1-0fc0-4218-91d6-7ca58eb622c1",
@@ -2596,6 +2620,14 @@
                 "id": "24b6441f-3c7c-45cb-9628-ec737da7f6b7",
                 "resourcePath": "views\\e232ef6a-c2f2-4860-a81d-d2399489dcb1.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "e28287bb-41a1-479a-a318-fa489da5f3a8",
+            "Value": {
+                "id": "8d8f7a53-f47c-456b-9c3d-6b5653341c2f",
+                "resourcePath": "fonts\\font0\\font0.yy",
+                "resourceType": "GMFont"
             }
         },
         {
@@ -2748,6 +2780,14 @@
                 "id": "8ae62440-6108-48f7-b08d-0b17687db682",
                 "resourcePath": "scripts\\collision_rectangle_list\\collision_rectangle_list.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "ed22f803-9044-41b6-ad93-18c48b2a50fa",
+            "Value": {
+                "id": "39b7e67e-122b-4ad3-99e6-842ec611403c",
+                "resourcePath": "shaders\\shader1\\shader1.yy",
+                "resourceType": "GMShader"
             }
         },
         {
