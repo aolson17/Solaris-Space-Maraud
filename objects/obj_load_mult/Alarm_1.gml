@@ -1,0 +1,2 @@
+global.loading = 0
+

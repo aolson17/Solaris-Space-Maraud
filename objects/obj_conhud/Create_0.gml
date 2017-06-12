@@ -1,0 +1,2 @@
+global.shipcost = 0
+
