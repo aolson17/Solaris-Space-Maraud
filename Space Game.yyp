@@ -2287,6 +2287,14 @@
             }
         },
         {
+            "Key": "ceff92cf-a6a9-4a1e-958a-3fbc4f18498d",
+            "Value": {
+                "id": "74967769-3d84-40bf-8675-475464f58dd9",
+                "resourcePath": "sprites\\sprite107ddsd\\sprite107ddsd.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "cf02a981-32c6-434a-b6b6-494645ffa753",
             "Value": {
                 "id": "abed1fac-5a44-4fe5-b63d-f0e20fbd6315",
