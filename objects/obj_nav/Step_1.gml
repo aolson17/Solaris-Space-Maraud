@@ -290,7 +290,7 @@ for(i=0;i<=ds_list_size(global.playership);i++){
 }
 
 }else if ds_list_find_index(global.enemyship, id) != -1{// If part of an enemy ship
-    
+
     //lateral movement
     moveh = key_left + key_right;
     movev = key_up + key_down;
@@ -357,10 +357,10 @@ for(i=0;i<=ds_list_size(global.playership);i++){
     }
     image_angle = round(orbit_angle*10)/10
     
-    x += round(curh)
-    y += round(curv)
+    x += curh
+    y += curv
     
-    
+    /*
     for(i=0;i<=ds_list_size(global.enemyship);i++){
         with(ds_list_find_value(global.enemyship,i)){
             
@@ -402,7 +402,7 @@ for(i=0;i<=ds_list_size(global.playership);i++){
                 }
             }
         }
-    }
+    }*/
 }
 
 
@@ -413,5 +413,3 @@ for(i=0;i<=ds_list_size(global.playership);i++){
 
 
 }
-
-if instance_number(obj_nav)>1{show_debug_message("made it")}
