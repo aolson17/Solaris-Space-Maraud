@@ -1,14 +1,15 @@
 /// @description AI
 if instance_number(obj_player.navLink) != 0{
     with(enavLink){
+		
         tcurh = curh
         tcurv = curv
         
         closeness = 400
         
-        if abs(point_distance(x+curh,y+curv,obj_player.navLink.x,obj_player.navLink.y) - closeness) > 10{
+        if abs(point_distance(x+curh,y+curv,obj_player.navLink.x + obj_player.navLink.curh,obj_player.navLink.y + obj_player.navLink.curv) - closeness) > 10{
             
-            vel = abs(point_distance(x+curh,y+curv,obj_player.navLink.x,obj_player.navLink.y) - closeness)//abs(curh) + abs(curv)
+            vel = abs(point_distance(x+curh,y+curv,obj_player.navLink.x + obj_player.navLink.curh,obj_player.navLink.y + obj_player.navLink.curv) - closeness)//abs(curh) + abs(curv)
             velnum = 0
             
             

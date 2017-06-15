@@ -34,6 +34,8 @@ turns = 0
 show = 0
 shiph = 0
 shipv = 0
+moveh = 0
+movev = 0
 
 inship = 0
 

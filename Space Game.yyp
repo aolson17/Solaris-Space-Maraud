@@ -527,6 +527,14 @@
             }
         },
         {
+            "Key": "2bee1150-5de3-4ea7-9d6c-47b14006d99c",
+            "Value": {
+                "id": "277091d1-5ea9-428f-bdc0-dfefe43049dd",
+                "resourcePath": "sprites\\sprite108asdasdsad\\sprite108asdasdsad.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "2c2e0f8a-aae1-40f4-9fd1-4d8271b6ec28",
             "Value": {
                 "id": "cb79bedc-e4b3-47d4-a594-94f85f4f8323",
@@ -604,6 +612,14 @@
                 "id": "7ed155cb-480b-44ae-b7f1-fca3c5cf1547",
                 "resourcePath": "objects\\obj_asteroid\\obj_asteroid.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "3046b766-1c9c-4f4c-ba67-f74f1c230c06",
+            "Value": {
+                "id": "183f7d43-d455-4c83-a562-fbf282cabbbb",
+                "resourcePath": "shaders\\shader0\\shader0.yy",
+                "resourceType": "GMShader"
             }
         },
         {
@@ -1183,6 +1199,14 @@
             }
         },
         {
+            "Key": "6746d3ff-7f19-4396-b061-e95b2adac894",
+            "Value": {
+                "id": "8b7970f9-cfad-4526-8e16-0836e453a4db",
+                "resourcePath": "timelines\\timeline0\\timeline0.yy",
+                "resourceType": "GMTimeline"
+            }
+        },
+        {
             "Key": "67abef04-0dee-4fd5-a5e3-b88ac6b1c505",
             "Value": {
                 "id": "a6dc3a6f-9157-4957-a052-1eb380240b21",
@@ -1572,6 +1596,14 @@
                 "id": "6efe730a-48f9-4f96-aec5-4767491a1a56",
                 "resourcePath": "objects\\obj_repplat\\obj_repplat.yy",
                 "resourceType": "GMObject"
+            }
+        },
+        {
+            "Key": "91ee800c-be84-450c-8e78-029fa85a47e6",
+            "Value": {
+                "id": "02f575bc-5f36-44e7-8e8f-78c0b0999326",
+                "resourcePath": "sprites\\sprite1h1\\sprite1h1.yy",
+                "resourceType": "GMSprite"
             }
         },
         {
@@ -2263,6 +2295,14 @@
             }
         },
         {
+            "Key": "ceff92cf-a6a9-4a1e-958a-3fbc4f18498d",
+            "Value": {
+                "id": "74967769-3d84-40bf-8675-475464f58dd9",
+                "resourcePath": "sprites\\sprite107ddsd\\sprite107ddsd.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "cf02a981-32c6-434a-b6b6-494645ffa753",
             "Value": {
                 "id": "abed1fac-5a44-4fe5-b63d-f0e20fbd6315",
@@ -2559,6 +2599,14 @@
             }
         },
         {
+            "Key": "e11d5dd9-083d-4f8a-a2a2-614a6f6e68ae",
+            "Value": {
+                "id": "96f6dce6-0332-441e-9da7-e9b4056d218d",
+                "resourcePath": "sprites\\sprite1h\\sprite1h.yy",
+                "resourceType": "GMSprite"
+            }
+        },
+        {
             "Key": "e13d1954-2c6b-408e-9a5e-1421c76f53c3",
             "Value": {
                 "id": "ace26ef1-0fc0-4218-91d6-7ca58eb622c1",
@@ -2596,6 +2644,14 @@
                 "id": "24b6441f-3c7c-45cb-9628-ec737da7f6b7",
                 "resourcePath": "views\\e232ef6a-c2f2-4860-a81d-d2399489dcb1.yy",
                 "resourceType": "GMFolder"
+            }
+        },
+        {
+            "Key": "e28287bb-41a1-479a-a318-fa489da5f3a8",
+            "Value": {
+                "id": "8d8f7a53-f47c-456b-9c3d-6b5653341c2f",
+                "resourcePath": "fonts\\font0\\font0.yy",
+                "resourceType": "GMFont"
             }
         },
         {
@@ -2748,6 +2804,14 @@
                 "id": "8ae62440-6108-48f7-b08d-0b17687db682",
                 "resourcePath": "scripts\\collision_rectangle_list\\collision_rectangle_list.yy",
                 "resourceType": "GMScript"
+            }
+        },
+        {
+            "Key": "ed22f803-9044-41b6-ad93-18c48b2a50fa",
+            "Value": {
+                "id": "39b7e67e-122b-4ad3-99e6-842ec611403c",
+                "resourcePath": "shaders\\shader1\\shader1.yy",
+                "resourceType": "GMShader"
             }
         },
         {
