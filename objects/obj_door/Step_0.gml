@@ -16,13 +16,13 @@ if adjx <= 48 && adjx >= -48 && adjy <= 32 && adjy >= -32{
     image_speed = -quickness
     if  round(image_index) = 0{image_speed = 0}
 }
-
+/*
 if (round(image_index) != 10 || round(image_index) != 11 || round(image_index) != 12)&& opened = 1{
     opened = 0
     instance_create(x,y,obj_doorcol)
 }else if (round(image_index) = 10 || round(image_index) = 11 || round(image_index) = 12) && opened = 0{
 
-}
+}*/
 
 }
 

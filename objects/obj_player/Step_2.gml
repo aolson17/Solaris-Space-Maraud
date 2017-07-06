@@ -1,12 +1,7 @@
 /// @description Movement
 if global.inship = 0 {
 
-
-
-image_speed = .2//hsp * .04
-
-
-if(device_mouse_x_to_gui(0) > __view_get( e__VW.WPort, 0 ) / 2) {
+if(mouse_x>x) {
     face = 1
 } else {
     face = -1
@@ -14,207 +9,245 @@ if(device_mouse_x_to_gui(0) > __view_get( e__VW.WPort, 0 ) / 2) {
 
 
 //Variables
-grav = 1
-jumpspeed = 19
-movespeed = 5
+grav = .6
+jumpspeed = 15
+jumpstoprate = .8
+wallJumpX = 3
+wallJumpY = 12
 acceleration = .2
+fallspeed = 30
+xfriction = .3
+airResistance = .1
+stepheight = 8
+airMovePercent = .3
+stepSpeedPercent = .3
+slowSpeed = 1
+walkspeed = 3
+sprintspeed = 6
+movespeed = walkspeed*!keyboard_check(vk_shift)*!keyboard_check(ord("V")) + sprintspeed*keyboard_check(vk_shift) + slowSpeed*!keyboard_check(vk_shift)*keyboard_check(ord("V"))
 
 //Movement
 key_right = keyboard_check(ord("D"));
 key_left = -keyboard_check(ord("A"));
-key_jump = keyboard_check_pressed(vk_space);
+key_jump = keyboard_check(vk_space);
 
 move = key_left + key_right;
 hsp = move * movespeed*acceleration;
 
+if (cury < fallspeed)cury += grav ;//Apply Gravity
 
-
-
-//Jump
-mask_index = spr_jump_mask
-if (place_meeting(x+lengthdir_x(3,image_angle - 90),y+lengthdir_y(3,image_angle - 90),par_wall)){
-    vsp = key_jump * -jumpspeed
-} else{
-    vsp = 0
-}
-mask_index = spr_player_mask
-
-if vsp < -jumpspeed {
-    vsp = -jumpspeed
+if (place_meeting(x,y+1,par_wall)||place_meeting(x,y-1,par_wall)){
+    if place_meeting(x,y-1,par_wall){// stop jump at ceiling
+        jump = 0
+    }
+    if place_meeting(x,y+1,par_wall)&&cury >0{
+        cury = 0
+    }
+    if place_meeting(x,y-1,par_wall)&&cury <0{
+        cury = 0
+    }
 }
 
-cury += vsp
-if (cury < 20)cury += grav ;//Apply Gravity
-
-if curx+hsp < movespeed+(movespeed*acceleration) && curx+hsp > -movespeed-(movespeed*acceleration){
-    curx += hsp
-}
-if hsp = 0 && (place_meeting(x+lengthdir_x(10,image_angle - 90),y+lengthdir_y(10,image_angle - 90),par_wall)){//apply friction
-    if curx > 0{curx = curx - .5}
-    if curx < 0{curx = curx + .5}
-    if curx <= 1 && curx >= -1{curx = 0}
+//Set Jump State
+vsp = 0
+if key_jump{
+    if place_meeting(x,y+1,par_wall){
+        jump = 1
+        vsp = key_jump * -jumpspeed
+    }
 }
 
+//Manage Jump
+if jump = 1{
+    if cury > 0{//if falling
+        jump = 0
+    }else if !key_jump{
+        cury *= jumpstoprate
+        jump = 0
+    }
+}
 
-xpos = x
-ypos = y
-//move horizontally
-x += lengthdir_x(curx,image_angle)
-y += lengthdir_y(curx,image_angle)
+
+if cury < -jumpspeed {// Limit jump speed
+    cury = -jumpspeed
+}
+
+if crouchJumpReady = 1{// if switching out of crouch
+    cury += vsp*3// apply crouch jump
+}else{
+    cury += vsp// apply jump
+}
+
+if crouch=0&& cury>0&&move!=0{// wall slide
+    if collision_point(x+1+sprite_width/2,y+sprite_height/2,par_wall,true,true)&&collision_point(x+1+sprite_width/2,y-sprite_height/2,par_wall,true,true){// wall slide right
+        cury=clamp(cury,-100,2)
+        scr_wallslide_right()
+        
+        // wall jump
+        if keyboard_check_pressed(vk_space){
+            curx -= wallJumpX
+            cury -= wallJumpY
+        }
+    }
+    if collision_point(x-1-sprite_width/2,y+sprite_height/2,par_wall,true,true)&&collision_point(x-1-sprite_width/2,y-sprite_height/2,par_wall,true,true){// wall slide left
+        cury=clamp(cury,100,2)
+        scr_wallslide_left()
+        
+        // wall jump
+        if keyboard_check_pressed(vk_space){
+            curx += wallJumpX
+            cury -= wallJumpY
+        }
+    }
+}
+
+if hsp > 0{//limit speed right
+    if curx+hsp <= movespeed{
+        curx += (place_meeting(x,y+1,par_wall))*hsp +((1-place_meeting(x,y+1,par_wall))*airMovePercent*hsp)
+    }
+}else if hsp < 0{// limit speed left
+    if curx+hsp >= -movespeed{
+        curx += (place_meeting(x,y+1,par_wall))*hsp +((1-place_meeting(x,y+1,par_wall))*airMovePercent*hsp)
+    }
+}
+if curx+hsp <= movespeed && curx+hsp >= -movespeed{// Limit run speed
+    curx += (place_meeting(x,y+1,par_wall))*hsp +((1-place_meeting(x,y+1,par_wall))*airMovePercent*hsp)
+}else if curx <= movespeed+(movespeed*acceleration) && curx >= -movespeed-(movespeed*acceleration){
+    if curx > 0{
+        curx+= abs(movespeed-abs(curx))
+    }else if curx < 0{
+        curx-= abs(movespeed-abs(curx))
+    }
+}
+if (place_meeting(x,y+1,par_wall)){//apply friction
+    
+    if curx > 0 && move<=0{
+        curx -= curx*xfriction
+    }else if curx < 0 && move>=0{
+        curx -= curx*xfriction
+    }
+    if curx <= 1 && curx >= -1 && curx != 0 && move = 0{curx = 0}
+}else{// apply air resistance
+    if curx > 0 && move<=0{
+        curx -= airResistance
+    }else if curx < 0 && move>=0{
+        curx += airResistance
+    }
+    if curx <= .3 && curx >= -.3 && curx != 0 && move = 0{curx = 0}
+}
+
 
 // Horizontal Collision
-if place_meeting(x,y,par_wall){
-    
-    x = xpos
-    y = ypos
-
-
-    //Check if sunken in block
-    for (i = 0; i < 10; i += .1){// i < max step up
-        x += lengthdir_x(curx,image_angle)
-        y += lengthdir_y(curx,image_angle)
-        x += lengthdir_x(i,image_angle + 90)
-        y += lengthdir_y(i,image_angle + 90)
-        if place_meeting(x,y,par_wall){
-        
-            x = xpos
-            y = ypos
-            
-            //Pixel Perfect Collision
-            x += lengthdir_x(sign(curx),image_angle)
-            y += lengthdir_y(sign(curx),image_angle)
-            if place_meeting(x,y,par_wall){
-                
-                var tempmask = mask_index
-                mask_index = spr_hor_col_mask
-                if place_meeting(x,y,par_wall){
-                    curx = 0
+if place_meeting(x+curx,y,par_wall){
+    if move != 0 && place_meeting(x,y+1,par_wall){// Only step up if keys are pressed
+        for (i = 0; i <= stepheight; i += 1){
+            if place_meeting(x+curx,y-i,par_wall){
+                //Pixel Perfect Collision
+                if !place_meeting(x+sign(curx),y-i,par_wall){
+                    if place_meeting(x+sign(curx),y-i,par_wall){
+                        //move horizontally 1 pixel and up
+                        x += sign(curx)
+                        y -= i
+                    }
                 }
-                mask_index = tempmask
-                
-                x = xpos
-                y = ypos
+            }else{
+                //move horizontally and up ramp
+                //lower speed when walking up step
+                curx = clamp(curx,-movespeed*stepSpeedPercent,movespeed*stepSpeedPercent)
+                x += curx
+                y -= i
+                break
             }
-            
-            
-        }else{
-            break
         }
     }
+    //No vertical movement
+    //Pixel Perfect Collision
+    for (i = abs(floor(curx)); i > 0; i -= 1){
+        if place_meeting(x + sign(curx) * i,y,par_wall){
+        }else{
+            
+            x += sign(curx) * i
+            
+            break
+        }
+    }    
+    
+    
+}else{
+    //move horizontally
+    x += curx
 }
 
-xpos = x
-ypos = y
-//move vertically
-x += lengthdir_x(cury,image_angle - 90)
-y += lengthdir_y(cury,image_angle - 90)
+if place_meeting(x+sign(curx),y,par_wall){// set curx to 0 if against wall
+    curx = 0
+}
 
 //Vertical Collision
-if place_meeting(x,y,par_wall){
-    x = xpos
-    y = ypos
-    
+if place_meeting(x,y+cury,par_wall){
     //Pixel Perfect Collision
     for (i = abs(floor(cury)); i > 0; i -= 1){
-        x += lengthdir_x(sign(cury) * i,image_angle - 90)
-        y += lengthdir_y(sign(cury) * i,image_angle - 90)
-        if place_meeting(x,y,par_wall){
-            x = xpos
-            y = ypos
+        if place_meeting(x,y + sign(cury) * i,par_wall){
         }else{
-            mask_index = spr_fall_mask
-            if (place_meeting(x,y,par_wall)){
+            if (place_meeting(x,y + sign(cury) * i,par_wall)){
                 if sign(cury) < 0{cury = 0}
             }
-            mask_index = spr_player_mask
+            
+            y += sign(cury) * i
             break
         }
+    }    
+}else{
+    //move vertically
+    y+=cury
+}
+
+if keyboard_check_pressed(vk_control){// manage crouching
+    if crouch = 1{// if switching out of crouch
+        if !collision_rectangle(bbox_left,bbox_bottom,bbox_right,bbox_top-(sprite_get_height(spr_char_stand) - sprite_get_height(spr_char_crouch)),par_wall,true,true){
+            if place_meeting(x,y+sprite_get_height(spr_char_stand) - sprite_get_height(spr_char_crouch),par_wall){
+                collisionobj = instance_place(x,y+sprite_get_height(spr_char_stand) - sprite_get_height(spr_char_crouch),par_wall)
+                if place_meeting(x,y+(sprite_get_height(spr_char_stand) - sprite_get_height(spr_char_crouch))/3,par_wall){
+                    collisionobj = instance_place(x,y+(sprite_get_height(spr_char_stand) - sprite_get_height(spr_char_crouch))/3,par_wall)
+                }
+                y= collisionobj.bbox_top - sprite_get_height(spr_char_stand)/2
+            }
+            crouch = 1-crouch  
+            crouchJumpReady = 1
+            alarm[2]=5
+        }
+    }else{// if switching to crouch
+        crouch = 1-crouch
     }
-    mask_index = spr_fall_mask
-            if (place_meeting(x,y,par_wall)){
-                if sign(cury) < 0{cury = 0}
-            }
-    mask_index = spr_jump_mask
-            if (place_meeting(x,y,par_wall)){
-                if sign(cury) > 0{cury = 0}
-            }
-    mask_index = spr_player_mask
     
 }
 
-
-
-
-
-
-mask_index = spr_player_mask
-if place_meeting(x,y,par_wall){
-
-show_debug_message("Bad Collision")
-
-xtemp = x
-cxplus = 0
-while place_meeting(x,y,par_wall){// +x check
-    x += .1
-    cxplus += .1
-    if !place_meeting(x,y,par_wall){
-    }
-}
-x = xtemp
-cxminus = 0
-while place_meeting(x,y,par_wall){// -x check
-    x -= .1
-    cxminus += .1
-    if !place_meeting(x,y,par_wall){
-    }
-}
-x = xtemp
-ytemp = y
-cyplus = 0
-while place_meeting(x,y,par_wall){// +y check
-    y += .1
-    cyplus += .1
-    if !place_meeting(x,y,par_wall){
-    }
-}
-y = ytemp
-cyminus = 0
-while place_meeting(x,y,par_wall){// -y check
-    y -= .1
-    cyminus += .1
-    if !place_meeting(x,y,par_wall){
-    }
-}
-y = ytemp
-
-if cxplus < cxminus && cxplus < cyplus && cxplus < cyminus{//cxplus is smallest
-    x += cxplus
-    show_debug_message("cxplus" + string(cxplus))
-}else if cxminus < cxplus && cxminus < cyplus && cxminus < cyminus{//cxminus is smallest
-    x -= cxminus
-    show_debug_message("cxminus" + string(cxminus))
-}else if cyplus < cyminus && cyplus < cxplus && cyplus < cxminus{//cyplus is smallest
-    y += cyplus
-    show_debug_message("cyplus" + string(cyplus))
-}else if cyminus < cyplus && cyminus < cxplus && cyminus < cxminus{//cyminus is smallest
-    y -= cyminus
-    show_debug_message("cyminus" + string(cyminus))
+if (crouch = 1 &&(cury < 3 || cury > -3)){
+	mask_index = spr_char_mask_crouch
+    if face = 1 {sprite_index = spr_char_crouch} else{
+    sprite_index = spr_char_crouch_left}
+}else if (hsp > 0.1 || hsp < -.1){
+	mask_index = spr_char_mask
+    if face = 1 {sprite_index = spr_char_run} else{
+    sprite_index = spr_char_run_left}
+}else if cury > 3{
+	mask_index = spr_char_mask_fall
+    if face = 1 {sprite_index = spr_char_fall} else{
+    sprite_index = spr_char_fall_left}
+}else if cury < -3{
+	mask_index = spr_char_mask_jump
+    if face = 1 {sprite_index = spr_char_jump} else{
+    sprite_index = spr_char_jump_left}
+}else {
+	mask_index = spr_char_mask
+    if face = 1 {sprite_index = spr_char_stand} else{
+    sprite_index = spr_char_stand_left}
 }
 
-}
+scr_bad_collision()
 
-if (hsp > 0.1 || hsp < -.1){
-    if face = 1 {sprite_index = spr_player} else{
-    sprite_index = spr_playerleft}
-} else {
-    if face = 1 {sprite_index = spr_playerstand} else{
-    sprite_index = spr_playerstandleft}
-}
-if cury > 3 || cury < -3{
-    if face = 1 {sprite_index = spr_playerjump} else{
-    sprite_index = spr_playerjumpleft}
-}
 
+
+image_speed = .2//hsp * .04
 
 
 }else {//When Controlling Ship
@@ -346,11 +379,11 @@ __view_set( e__VW.WView, view, vew * zoom )
 __view_set( e__VW.HView, view, veh * zoom )
 
 
-__view_set( e__VW.XView, 0, x-(vew * zoom/2) );
-__view_set( e__VW.YView, 0, y-(veh * zoom/2) );
+__view_set( e__VW.XView, 0, navLink.x+lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10)-(vew * zoom/2) );
+__view_set( e__VW.YView, 0, navLink.y+lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10)-(veh * zoom/2) );
 
 
-__view_set( e__VW.Angle, 0, -image_angle )
+__view_set( e__VW.Angle, 0, -round(navLink.orbit_angle*10)/10 )
 
 
 

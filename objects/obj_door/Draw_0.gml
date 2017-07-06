@@ -1,4 +1,4 @@
-draw_self()
+event_inherited()
 
 /*adjx = lengthdir_x(point_distance(obj_player.x,obj_player.y,x,y),point_direction(obj_player.x,obj_player.y,x,y) - image_angle)
 adjy = lengthdir_y(point_distance(obj_player.x,obj_player.y,x,y),point_direction(obj_player.x,obj_player.y,x,y) - image_angle)

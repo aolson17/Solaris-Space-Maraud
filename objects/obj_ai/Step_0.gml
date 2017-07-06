@@ -5,11 +5,11 @@ if instance_number(obj_player.navLink) != 0{
         tcurh = curh
         tcurv = curv
         
-        closeness = 400
+        closeness = 1000
         
-        if abs(point_distance(x+curh,y+curv,obj_player.navLink.x + obj_player.navLink.curh,obj_player.navLink.y + obj_player.navLink.curv) - closeness) > 10{
+        if scr_ai_target("lateral") > 200{
             
-            vel = abs(point_distance(x+curh,y+curv,obj_player.navLink.x + obj_player.navLink.curh,obj_player.navLink.y + obj_player.navLink.curv) - closeness)//abs(curh) + abs(curv)
+            vel = scr_ai_target("lateral")
             velnum = 0
             
             
@@ -18,7 +18,7 @@ if instance_number(obj_player.navLink) != 0{
             curh -= (lengthdir_x(movespeed*thrust_up,image_angle - 90))
             curv -= (lengthdir_y(movespeed*thrust_up,image_angle - 90))
             
-            targup = abs(point_distance(x+curh,y+curv,obj_player.navLink.x,obj_player.navLink.y) - closeness)//velup = abs(curh) + abs(curv)
+            targup = scr_ai_target("lateral")
             
             if thrust_up = 0 {velnum ++}
             curh = tcurh
@@ -27,7 +27,7 @@ if instance_number(obj_player.navLink) != 0{
             curh += (lengthdir_x(movespeed*thrust_down,image_angle - 90))
             curv += (lengthdir_y(movespeed*thrust_down,image_angle - 90))
             
-            targdown = abs(point_distance(x+curh,y+curv,obj_player.navLink.x,obj_player.navLink.y) - closeness)//veldown = abs(curh) + abs(curv)
+            targdown = scr_ai_target("lateral")
             
             if thrust_down = 0 {velnum ++}
             curh = tcurh
@@ -36,7 +36,7 @@ if instance_number(obj_player.navLink) != 0{
             curh -= (lengthdir_x(movespeed*thrust_left,image_angle))
             curv -= (lengthdir_y(movespeed*thrust_left,image_angle))
             
-            targleft = abs(point_distance(x+curh,y+curv,obj_player.navLink.x,obj_player.navLink.y) - closeness)//velleft = abs(curh) + abs(curv)
+            targleft = scr_ai_target("lateral")
             
             if thrust_left = 0 {velnum ++}
             curh = tcurh
@@ -45,7 +45,7 @@ if instance_number(obj_player.navLink) != 0{
             curh += (lengthdir_x(movespeed*thrust_right,image_angle))
             curv += (lengthdir_y(movespeed*thrust_right,image_angle))
             
-            targright = abs(distance_to_point(obj_player.navLink.x+curh,obj_player.navLink.y+curv) - closeness)//velright = abs(curh) + abs(curv)
+            targright = scr_ai_target("lateral")
             
             if thrust_right = 0 {velnum ++}
             curh = tcurh
@@ -53,23 +53,27 @@ if instance_number(obj_player.navLink) != 0{
             
             
             if targup < vel{
-                //vsp = -movespeed*(instance_number(obj_ethrustup))
-                key_up = -1
+				if scr_ai_target("lateral") > 300{
+					key_up = -1
+				}else{key_up = -1}
                 velnum ++
             }else{key_up = 0}
             if targdown < vel{
-                //vsp = movespeed*(instance_number(obj_ethrustdown))
-                key_down = 1
+                if scr_ai_target("lateral") > 300{
+					key_down = 1
+				}else{key_down = 1}
                 velnum ++
             }else{key_down = 0}
             if targleft < vel{
-                //hsp = -movespeed*(instance_number(obj_ethrustleft))
-                key_left = -1
+                if scr_ai_target("lateral") > 300{
+					key_left = -1
+				}else{key_left = -1}
                 velnum ++
             }else{key_left = 0}
             if targright < vel{
-                //hsp = movespeed*(instance_number(obj_ethrustright))
-                key_right = 1
+                if scr_ai_target("lateral") > 300{
+					key_right = 1
+				}else{key_right = 1}
                 velnum ++
             }else{key_right = 0}
             
@@ -77,24 +81,116 @@ if instance_number(obj_player.navLink) != 0{
                 curh = 0
                 curv = 0
             }
-        }
+        }else{// stop
+			
+			tcurh = curh
+		    tcurv = curv
+		    if curv != 0 || curh != 0{
+        
+		        vel = abs(curh) + abs(curv)
+		        velnum = 0
+        
+		        //velup
+		        curh -= (lengthdir_x(movespeed*(thrust_up),image_angle - 90))
+		        curv -= (lengthdir_y(movespeed*(thrust_up),image_angle - 90))
+        
+		        velup = abs(curh) + abs(curv)
+		        if thrust_up = 0 {velnum ++}
+		        curh = tcurh
+		        curv = tcurv
+		        //veldown
+		        curh += (lengthdir_x(movespeed*(thrust_down),image_angle - 90))
+		        curv += (lengthdir_y(movespeed*(thrust_down),image_angle - 90))
+		        veldown = abs(curh) + abs(curv)
+        
+		        if thrust_down = 0 {velnum ++}
+		        curh = tcurh
+		        curv = tcurv
+		        //velleft
+		        curh -= (lengthdir_x(movespeed*(thrust_left),image_angle))
+		        curv -= (lengthdir_y(movespeed*(thrust_left),image_angle))
+		        velleft = abs(curh) + abs(curv)
+        
+		        if thrust_left = 0 {velnum ++}
+		        curh = tcurh
+		        curv = tcurv
+		        //velright
+		        curh += (lengthdir_x(movespeed*(thrust_right),image_angle))
+		        curv += (lengthdir_y(movespeed*(thrust_right),image_angle))
+		        velright = abs(curh) + abs(curv)
+        
+		        if thrust_right = 0 {velnum ++}
+		        curh = tcurh
+		        curv = tcurv
+        
+		        if velup < vel{
+		            vsp = -movespeed*(thrust_up)
+		            velnum ++
+		        }
+		        if veldown < vel{
+		            vsp = movespeed*(thrust_down)
+		            velnum ++
+		        }
+		        if velleft < vel{
+		            hsp = -movespeed*(thrust_left)
+		            velnum ++
+		        }
+		        if velright < vel{
+		            hsp = movespeed*(thrust_right)
+		            velnum ++
+		        }
+        
+		        if velnum = 0{
+		            curh = 0
+		            curv = 0
+		        }
+		    }
+			
+			
+		}
         
         
+		
         //Rotation
         
-        
-        if image_angle > point_direction(x,y,obj_player.navLink.x,obj_player.navLink.y) + 30{// When clockwise
-            key_cw = -1
-        }else {key_cw = 0}
-        
-        if image_angle < point_direction(x,y,obj_player.navLink.x,obj_player.navLink.y) - 30{// When counterclockwise
-            key_ccw = 1
-        }else{key_ccw = 0}
-        
-        
-        
-        key_up = -1
-        
+		if abs(orbit_angle+curr - obj_player.navLink.orbit_angle) > 2{
+		
+			turnchoice = "none"
+		
+			if orbit_angle+curr*3 < obj_player.navLink.orbit_angle{
+				curr += (rotatespeed*thrust_ccw)
+				turnchoice = "ccw"
+			}
+		
+			if orbit_angle+curr*3 > obj_player.navLink.orbit_angle{
+				curr -= (rotatespeed*thrust_cw)
+				turnchoice = "cw"
+			}
+		
+		
+			for(i=0;i<=ds_list_size(global.enemyship);i++){// turn ccw thrusters on
+				with(ds_list_find_value(global.enemyship,i)){
+					if object_get_parent(object_index) = par_thrust{
+			            if other.turnchoice = "none"{
+							//image_index = 0
+						}else if other.turnchoice = "ccw"{
+							if rotpos = "ccw"{
+				                image_index = 1
+				            }else{
+								//image_index = 0
+							}
+						}else if other.turnchoice = "cw"{
+							if rotpos = "cw"{
+				                image_index = 1
+				            }else{
+								//image_index = 0
+							}
+						}
+					}
+				}
+			}
+		}
+		
     }
 }
     

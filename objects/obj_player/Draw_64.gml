@@ -1,4 +1,5 @@
 /// @description Draw GUI
+/*
 if room = Land{
 draw_text(12,50,string_hash_to_newline(string(global.numb)))
 draw_text(12,20,string_hash_to_newline(string(x)))

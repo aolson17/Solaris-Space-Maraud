@@ -17,15 +17,54 @@ if room = ShipBuilder {
 }
 
 if instance_number(obj_player)>0{
-    mangle = point_direction(x,y,mouse_x,mouse_y) - obj_player.navLink.image_angle
+    mangle = point_direction(scr_rotated(x),scr_rotated(y),mouse_x,mouse_y) - obj_player.navLink.orbit_angle
 }else{
-    mangle = point_direction(x,y,mouse_x,mouse_y) - obj_nav.image_angle
+    mangle = point_direction(scr_rotated(x),scr_rotated(y),mouse_x,mouse_y) - obj_nav.orbit_angle
 }
 if mangle >= 360{while (mangle >= 360){mangle -= 360}}
 if mangle <= 0{while (mangle <= 0){mangle += 360}}
 range = 5000
 if distance_to_point(mouse_x,mouse_y) <= range && room != ShipBuilder{
-    if !collision_line(x,y,mouse_x,mouse_y,par_flyablesolid,false,true) && ds_list_find_index(global.playership, id) != -1{
+	
+	for(j=0;j<=ds_list_size(global.playership);j++){
+	    with(ds_list_find_value(global.playership,j)){
+	        if object_index = obj_ai{
+				ds_list_delete(global.playership,other.j)
+				break
+			}
+        
+			if object_index != obj_player{
+		
+				tempx = x
+				tempy = y
+				tempangle = image_angle
+		
+				image_angle = navLink.image_angle
+		        x = navLink.x + lengthdir_x(point_distance(x, y, navLink.x, navLink.y),ang + navLink.orbit_angle);
+			    y = navLink.y + lengthdir_y(point_distance(x, y, navLink.x, navLink.y),ang + navLink.orbit_angle);
+        
+			}
+	    }
+	}
+	
+	line_of_sight = !collision_line(scr_rotated(x),scr_rotated(y),mouse_x,mouse_y,par_flyablesolid,false,true) && ds_list_find_index(global.playership, id)
+	
+	for(j=0;j<=ds_list_size(global.playership);j++){
+	    with(ds_list_find_value(global.playership,j)){
+	        if object_index = obj_ai{
+				ds_list_delete(global.playership,other.j)
+				break
+			}
+			if object_index != obj_player{
+				x = tempx
+				y = tempy
+				image_angle = tempangle
+			}
+	    }
+	}
+	
+	
+    if line_of_sight != -1{
         
         if object_index = obj_turret{
             mi = 0//   min
@@ -47,41 +86,14 @@ if distance_to_point(mouse_x,mouse_y) <= range && room != ShipBuilder{
             alarm[1] = 1//25
             
             
-            ds_list_add(obj_laser_control.laser_x,x)
-            ds_list_add(obj_laser_control.laser_y,y)
-            ds_list_add(obj_laser_control.laser_angle,point_direction(x,y,mouse_x,mouse_y))
-            ds_list_add(obj_laser_control.laser_hv,obj_player.navLink.curh+lengthdir_x(15,point_direction(x,y,mouse_x,mouse_y)))
-            ds_list_add(obj_laser_control.laser_vv,obj_player.navLink.curv+lengthdir_y(15,point_direction(x,y,mouse_x,mouse_y)))
+            ds_list_add(obj_laser_control.laser_x,scr_rotated(x))
+            ds_list_add(obj_laser_control.laser_y,scr_rotated(y))
+            ds_list_add(obj_laser_control.laser_angle,point_direction(scr_rotated(x),scr_rotated(y),mouse_x,mouse_y))
+            ds_list_add(obj_laser_control.laser_hv,obj_player.navLink.curh+lengthdir_x(15,point_direction(scr_rotated(x),scr_rotated(y),mouse_x,mouse_y)))
+            ds_list_add(obj_laser_control.laser_vv,obj_player.navLink.curv+lengthdir_y(15,point_direction(scr_rotated(x),scr_rotated(y),mouse_x,mouse_y)))
             ds_list_add(obj_laser_control.laser_time,150)
             ds_list_add(obj_laser_control.laser_source,id)
-            /*instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)
-            instance_create(x,y,obj_laser)*/
         }
-        
-        
-        
         
         
         if mangle <= ma && mangle >= mi{
@@ -92,11 +104,3 @@ if distance_to_point(mouse_x,mouse_y) <= range && room != ShipBuilder{
         }
     }
 }
-
-
-
-
-
-
-/* */
-/*  */

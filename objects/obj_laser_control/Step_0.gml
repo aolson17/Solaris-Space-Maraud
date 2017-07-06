@@ -1,5 +1,26 @@
 /// @description Move Lasers
 
+for(j=0;j<=ds_list_size(global.playership);j++){
+    with(ds_list_find_value(global.playership,j)){
+        if object_index = obj_ai{
+			ds_list_delete(global.playership,other.j)
+			break
+		}
+        
+		if object_index != obj_player{
+		
+			tempx = x
+			tempy = y
+			tempangle = image_angle
+		
+			image_angle = navLink.image_angle
+	        x = navLink.x + lengthdir_x(point_distance(x, y, navLink.x, navLink.y),ang + navLink.orbit_angle);
+		    y = navLink.y + lengthdir_y(point_distance(x, y, navLink.x, navLink.y),ang + navLink.orbit_angle);
+        
+		}
+    }
+}
+
 for (i = 0;i < ds_list_size(laser_x); i++){
     
     ds_list_replace(laser_x,i,ds_list_find_value(laser_x,i)+ds_list_find_value(laser_hv,i))
@@ -95,6 +116,16 @@ for (i = 0;i < ds_list_size(laser_x); i++){
 }
 
 
-
-/* */
-/*  */
+for(j=0;j<=ds_list_size(global.playership);j++){
+    with(ds_list_find_value(global.playership,j)){
+        if object_index = obj_ai{
+			ds_list_delete(global.playership,other.j)
+			break
+		}
+		if object_index != obj_player{
+			x = tempx
+			y = tempy
+			image_angle = tempangle
+		}
+    }
+}

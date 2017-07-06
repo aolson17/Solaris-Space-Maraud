@@ -1,8 +1,9 @@
-/// @description  Pseudo Enemy Parent System
+/// @description 
 
 global.enemyship = ds_list_create()
 enavLink = noone
 
+closeness = 800
 
 borders = -1
 key_cw = 0
