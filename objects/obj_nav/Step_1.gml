@@ -19,7 +19,7 @@ if mouse_check_button_released(mb_left) and mouse_x < x + sprite_width / 2 and m
         hold = 0
         collide = 0
     }
-}
+} 
     
 if hold = 1{
     x = mouse_x
@@ -141,32 +141,32 @@ if keyboard_check(vk_space){
         velnum = 0
         
         //velup
-        curh -= (lengthdir_x(movespeed*(thrust_up),image_angle - 90))
-        curv -= (lengthdir_y(movespeed*(thrust_up),image_angle - 90))
+        curh -= (lengthdir_x(movespeed*(thrust_up),orbit_angle - 90))
+        curv -= (lengthdir_y(movespeed*(thrust_up),orbit_angle - 90))
         
         velup = abs(curh) + abs(curv)
         if thrust_up = 0 {velnum ++}
         curh = tcurh
         curv = tcurv
         //veldown
-        curh += (lengthdir_x(movespeed*(thrust_down),image_angle - 90))
-        curv += (lengthdir_y(movespeed*(thrust_down),image_angle - 90))
+        curh += (lengthdir_x(movespeed*(thrust_down),orbit_angle - 90))
+        curv += (lengthdir_y(movespeed*(thrust_down),orbit_angle - 90))
         veldown = abs(curh) + abs(curv)
         
         if thrust_down = 0 {velnum ++}
         curh = tcurh
         curv = tcurv
         //velleft
-        curh -= (lengthdir_x(movespeed*(thrust_left),image_angle))
-        curv -= (lengthdir_y(movespeed*(thrust_left),image_angle))
+        curh -= (lengthdir_x(movespeed*(thrust_left),orbit_angle))
+        curv -= (lengthdir_y(movespeed*(thrust_left),orbit_angle))
         velleft = abs(curh) + abs(curv)
         
         if thrust_left = 0 {velnum ++}
         curh = tcurh
         curv = tcurv
         //velright
-        curh += (lengthdir_x(movespeed*(thrust_right),image_angle))
-        curv += (lengthdir_y(movespeed*(thrust_right),image_angle))
+        curh += (lengthdir_x(movespeed*(thrust_right),orbit_angle))
+        curv += (lengthdir_y(movespeed*(thrust_right),orbit_angle))
         velright = abs(curh) + abs(curv)
         
         if thrust_right = 0 {velnum ++}
@@ -214,12 +214,12 @@ if (keyboard_check(vk_space) || keyboard_check(vk_lalt)){
 }
 
 //add horizontal speed 
-curh += lengthdir_x(hsp,image_angle)
-curv += lengthdir_y(hsp,image_angle)
+curh += lengthdir_x(hsp,orbit_angle)
+curv += lengthdir_y(hsp,orbit_angle)
 
 //add vertical speed
-curh += lengthdir_x(vsp,image_angle - 90)
-curv += lengthdir_y(vsp,image_angle - 90)
+curh += lengthdir_x(vsp,orbit_angle - 90)
+curv += lengthdir_y(vsp,orbit_angle - 90)
 
 curr += rsp
 }
@@ -229,21 +229,22 @@ if floor(curr) == -1{
 }else{
     orbit_angle += floor(curr*10) / 10;
 }
-image_angle = round(orbit_angle*10)/10
+//image_angle = round(orbit_angle*10)/10
 
 x += round(curh)
 y += round(curv)
 
-
+has_moved_player = 0
 for(i=0;i<=ds_list_size(global.playership);i++){
     with(ds_list_find_value(global.playership,i)){
         if object_index = obj_ai{
-			ds_list_delete(global.playership,i)
+			ds_list_delete(global.playership,other.i)
 			break
 		}
-        hsp = obj_player.navLink.hsp
-        vsp = obj_player.navLink.vsp
+        
         if object_index != obj_player{
+			hsp = obj_player.navLink.hsp
+			vsp = obj_player.navLink.vsp
             curh = obj_player.navLink.curh
             curv = obj_player.navLink.curv
         }
@@ -251,14 +252,14 @@ for(i=0;i<=ds_list_size(global.playership);i++){
             
             
             
-            idealr = ang + navLink.orbit_angle
-            angle = point_direction(navLink.x,navLink.y,x,y) + floor(navLink.curr)
+            //idealr = ang + navLink.orbit_angle
+            //angle = point_direction(navLink.x,navLink.y,x,y) + floor(navLink.curr)
             
-            x = navLink.x+lengthdir_x(dis,idealr);
-            y = navLink.y+lengthdir_y(dis,idealr);
+            x = navLink.x+lengthdir_x(dis,ang);
+            y = navLink.y+lengthdir_y(dis,ang);
         }
         
-        image_angle = navLink.image_angle
+        //image_angle = navLink.image_angle
         
         if other.inship=1{
             if object_get_parent(object_index) = par_thrust{// turn thrusters on
@@ -280,37 +281,19 @@ for(i=0;i<=ds_list_size(global.playership);i++){
             }
         }
         if object_index = obj_player{
-            x = navLink.x + lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + navLink.adjcurr/3);
-            y = navLink.y + lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + navLink.adjcurr/3);
-            x += (navLink.curh/3)
-            y += (navLink.curv/3)
+			if other.has_moved_player = 0{
+	            //x = navLink.x + lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + navLink.adjcurr);
+	            //y = navLink.y + lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + navLink.adjcurr);
+				x += round(navLink.curh)
+				y += round(navLink.curv)
+				other.has_moved_player = 1
+			}
         }
         
     }
 }
-
 }else if ds_list_find_index(global.enemyship, id) != -1{// If part of an enemy ship
 
-    //lateral movement
-    moveh = key_left + key_right;
-    movev = key_up + key_down;
-    if moveh > 0{
-    hsp = (moveh)*movespeed*(thrust_right);
-    } else if moveh < 0 {
-    hsp = (moveh)*movespeed*(thrust_left);
-    }else if moveh = 0 {hsp = 0}
-    if movev > 0{
-    vsp = (movev)*movespeed*(thrust_down);
-    } else if movev < 0 {
-    vsp = (movev)*movespeed*(thrust_up);
-    }else if movev = 0 {vsp = 0}
-    //rotational movement
-    mover = key_cw + key_ccw;
-    if mover > 0{
-    rsp = (mover)*rotatespeed*(thrust_ccw);
-    } else if mover < 0 {
-    rsp = (mover)*rotatespeed*(thrust_cw);
-    }else if mover = 0 {rsp = 0}
     
     for(i=0;i<=ds_list_size(global.enemyship);i++){
         with(ds_list_find_value(global.enemyship,i)){
@@ -350,64 +333,95 @@ for(i=0;i<=ds_list_size(global.playership);i++){
         }
     }
     
-    if floor(curr) == -1{
-        orbit_angle += ceil(curr*10) / 10;
-    }else{
-        orbit_angle += floor(curr*10) / 10;
-    }
-    image_angle = round(orbit_angle*10)/10
+	
+	//lateral movement
+	moveh = key_left + key_right;
+	movev = key_up + key_down;
+	if moveh > 0{
+	hsp = (moveh)*movespeed*(thrust_right);
+	} else if moveh < 0 {
+	hsp = (moveh)*movespeed*(thrust_left);
+	}else if moveh = 0 {hsp = 0}
+	if movev > 0{
+	vsp = (movev)*movespeed*(thrust_down);
+	} else if movev < 0 {
+	vsp = (movev)*movespeed*(thrust_up);
+	}else if movev = 0 {vsp = 0}
+	//rotational movement
+	mover = key_cw + key_ccw;
+	if mover > 0{
+	rsp = (mover)*rotatespeed*(thrust_ccw);
+	} else if mover < 0 {
+	rsp = (mover)*rotatespeed*(thrust_cw);
+	}else if mover = 0 {rsp = 0}
+	
     
+    
+	//add horizontal speed 
+	curh += lengthdir_x(hsp,image_angle)
+	curv += lengthdir_y(hsp,image_angle)
+
+	//add vertical speed
+	curh += lengthdir_x(vsp,image_angle - 90)
+	curv += lengthdir_y(vsp,image_angle - 90)
+	
+	//add rotational speed
+	curr += rsp
+	
     x += curh
     y += curv
     
-    /*
+	
+	if floor(curr) == -1{
+	    orbit_angle += ceil(curr*10) / 10;
+	}else{
+	    orbit_angle += floor(curr*10) / 10;
+	}
+	//image_angle = round(orbit_angle*10)/10
+    
     for(i=0;i<=ds_list_size(global.enemyship);i++){
         with(ds_list_find_value(global.enemyship,i)){
             
-            hsp = other.hsp
-            vsp = other.vsp
+            
             if object_index != obj_player{
+				hsp = other.hsp
+				vsp = other.vsp
                 curh = other.curh
                 curv = other.curv
             }
             if object_index != obj_player and object_index != obj_nav{
                 
-                idealr = ang + other.orbit_angle
-                angle = point_direction(other.x,other.y,x,y) + floor(other.curr)
+                //idealr = ang + other.orbit_angle
+                //angle = point_direction(other.x,other.y,x,y) + floor(other.curr)
                 
-                x = other.x+lengthdir_x(dis,idealr);
-                y = other.y+lengthdir_y(dis,idealr);
+                x = other.x+lengthdir_x(dis,ang);
+                y = other.y+lengthdir_y(dis,ang);
             }
             
             if object_index != obj_player{
                 image_angle = obj_ai.enavLink.image_angle
             }
-            if other.inship=1{
-                if object_get_parent(object_index) = par_thrust{// turn thrusters on
-                    if other.rsp > 0 && rotpos = "ccw"{
-                        image_index = 1
-                    }else if other.rsp < 0 && rotpos = "cw"{
-                        image_index = 1
-                    }else if other.hsp < 0 && (object_index = obj_thrustleft){
-                        image_index = 1 
-                    }else if other.hsp > 0 && (object_index = obj_thrustright){
-                        image_index = 1 
-                    }else if other.vsp < 0 && (object_index = obj_thrustup){
-                        image_index = 1
-                    }else if other.vsp > 0 && (object_index = obj_thrustdown){
-                        image_index = 1
-                    } else {
-                        image_index = 0
-                    }
+            
+            if object_get_parent(object_index) = par_thrust{// turn thrusters on
+                if other.rsp > 0 && rotpos = "ccw"{
+                    image_index = 1
+                }else if other.rsp < 0 && rotpos = "cw"{
+                    image_index = 1
+                }else if other.hsp < 0 && (object_index = obj_thrustleft){
+                    image_index = 1 
+                }else if other.hsp > 0 && (object_index = obj_thrustright){
+                    image_index = 1 
+                }else if other.vsp < 0 && (object_index = obj_thrustup){
+                    image_index = 1
+                }else if other.vsp > 0 && (object_index = obj_thrustdown){
+                    image_index = 1
+                } else {
+                    image_index = 0
                 }
             }
         }
-    }*/
+    }
 }
-
-
-
-
 
 
 

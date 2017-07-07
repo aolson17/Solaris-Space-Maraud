@@ -8,6 +8,7 @@
         "4803f1ad-2420-444c-a7f8-30280cb5fbc9",
         "0a75d084-f7b5-4023-a1df-4bb11f8301d6",
         "6c18362e-8de5-4fb6-b4ee-b1eda0675f94",
+        "34ff5756-e816-4a9e-b867-443fe77b3535",
         "08b4dc9d-a03a-464d-8b59-f7d437a18c14",
         "a3ee0f6f-b3f8-4abe-8d94-2e56f818a05c",
         "837a55af-62af-47ed-8742-91bebcbd38ff",
@@ -28,8 +29,7 @@
         "5c7cca28-e818-49c3-8a47-845f0a366151",
         "e1ef0e56-6a4b-49d0-a8bc-a7795b74bcda",
         "3c4cc59b-cecd-47bf-8def-a0eb90ba3533",
-        "be1b0b00-c76e-4e40-a6f4-588dd83d54f1",
-        "34ff5756-e816-4a9e-b867-443fe77b3535"
+        "be1b0b00-c76e-4e40-a6f4-588dd83d54f1"
     ],
     "filterType": "GMObject",
     "folderName": "Construction",

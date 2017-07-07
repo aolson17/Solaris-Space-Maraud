@@ -1,5 +1,7 @@
 /// @description  Pseudo Parent System
 
+has_thrusters = 0
+
 range = 40
 
 enavLink = instance_nearest(mouse_x,mouse_y,obj_nav)
@@ -27,6 +29,9 @@ for(i=0;i<=ds_list_size(global.enemyship);i++){
                         if object_is_ancestor(ds_list_find_value(instances,i).object_index,par_flyablesolid) || object_is_ancestor(ds_list_find_value(instances,i).object_index,par_flyable){
                             if ds_list_find_value(instances,i).object_index != obj_player{// if not the player
                                 ds_list_add(global.enemyship, ds_list_find_value(instances,i))
+								if object_is_ancestor(ds_list_find_value(instances,i).object_index,par_thrust){
+									other.has_thrusters = 1
+								}
                             }
                         }
                     }
@@ -37,11 +42,39 @@ for(i=0;i<=ds_list_size(global.enemyship);i++){
 }
 
 //Find position compared to center of ship for rotaion
-par_thrust.alarm[0]=1
-
-show_debug_message("Size = " + string(ds_list_size(global.enemyship)))
-for(i=1;i<=ds_list_size(global.enemyship);i++){
-    show_debug_message("Includes " + string(ds_list_find_value(global.enemyship,i).object_index))
+if has_thrusters != 0{
+	par_thrust.alarm[0]=1
 }
 
+/*show_debug_message("Size = " + string(ds_list_size(global.enemyship)))
+for(i=1;i<=ds_list_size(global.enemyship);i++){
+    show_debug_message("Includes " + string(ds_list_find_value(global.enemyship,i).object_index))
+}*/
+
+sort_amount = ds_list_size(global.enemyship)-1
+
+
+for(i=0;i<=sort_amount;i++){// sort par_obj
+	with(ds_list_find_value(global.enemyship,i)){
+        
+		if object_get_parent(object_index)=par_obj{
+				
+				
+			ds_list_delete(global.enemyship,other.i)
+			ds_list_insert(global.enemyship,other.sort_amount,id)
+				
+				
+			other.sort_amount--
+		}
+		
+		if object_get_parent(object_index)=par_flyable{
+				
+				
+			ds_list_delete(global.enemyship,other.i)
+			ds_list_insert(global.enemyship,1,id)
+				
+				
+		}
+	}
+}
 

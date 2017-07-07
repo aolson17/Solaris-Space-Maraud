@@ -12,6 +12,10 @@ cony = y
 collide = 0
 hold = 0
 
+key_left = 0
+key_right = 0
+key_up = 0
+key_down = 0
 key_cw = 0
 key_ccw = 0
 orbit_angle = image_angle
@@ -36,6 +40,13 @@ shiph = 0
 shipv = 0
 moveh = 0
 movev = 0
+
+ai_hsp = 0
+ai_vsp = 0
+ai_rsp = 0
+ai_curh = 0
+ai_curv = 0
+ai_curr = 0
 
 inship = 0
 

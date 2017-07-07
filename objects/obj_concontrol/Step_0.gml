@@ -31,11 +31,14 @@ if mouse_wheel_up() {
 
 if keyboard_check(ord("C")) && obj_save_mult.active = false{
     
-    if instance_place(mouse_x,mouse_y,par_flyablesolid) != noone{
-        global.selected = instance_place(mouse_x,mouse_y,par_flyablesolid)
+    if collision_point(mouse_x,mouse_y,par_flyablesolid,true,true) != noone{
+        global.selected = collision_point(mouse_x,mouse_y,par_flyablesolid,true,true).object_index
+        global.selectedface = global.selected.face
+    }else if collision_point(mouse_x,mouse_y,par_flyable,true,true) != noone{
+        global.selected = instance_place(mouse_x,mouse_y,par_flyable)
         global.selectedface = global.selected.face
     }else{
-        global.selected = instance_place(mouse_x,mouse_y,par_flyable)
+        global.selected = instance_place(mouse_x,mouse_y,par_obj)
         global.selectedface = global.selected.face
     }
     
@@ -44,7 +47,7 @@ if keyboard_check(ord("C")) && obj_save_mult.active = false{
 if keyboard_check(ord("V")) && obj_save_mult.active = false{
     
     if global.selected != noone{
-        rep = instance_create(mouse_x,mouse_y,global.selected)
+        rep = instance_create(mouse_x,mouse_y,obj_repselected)
         rep.face = global.selectedface
         
     }

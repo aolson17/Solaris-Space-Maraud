@@ -1,5 +1,6 @@
 if room != ShipBuilder{
     if id = obj_player.navLink{
+		
         if mouse_x > x-12 && mouse_x < x+12 && mouse_y > y-12 && mouse_y < y + 12{
             __view_set( e__VW.XPort, view_current, __view_get( e__VW.XPort, view_current ) * (2) )
             __view_set( e__VW.YPort, view_current, __view_get( e__VW.YPort, view_current ) * (2) )

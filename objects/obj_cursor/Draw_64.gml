@@ -6,10 +6,12 @@ mx = device_mouse_x_to_gui(0)
 my = device_mouse_y_to_gui(0)
 
 
-draw_sprite_ext(spr_cursor,0, mx, my,__view_get( e__VW.WPort, 0 )/__view_get( e__VW.WView, 0 ),__view_get( e__VW.WPort, 0 )/__view_get( e__VW.WView, 0 ),0,c_white,1)
+//draw_sprite_ext(spr_cursor,0, mx, my,__view_get( e__VW.WPort, 0 )/__view_get( e__VW.WView, 0 ),__view_get( e__VW.WPort, 0 )/__view_get( e__VW.WView, 0 ),0,c_white,1)
+
+draw_sprite_ext(spr_cursor,0,mx,my,1.5,1.5,0,c_white,1)
 
 
-if keyboard_check(vk_lcontrol) && room != ShipBuilder{
+if keyboard_check(vk_rcontrol) && room != ShipBuilder{
 draw_set_colour(c_white)
     draw_text(mx, my,string_hash_to_newline("X: " + string(device_mouse_x(0)) + " Y: " + string(device_mouse_y(0))))
     draw_text(mx,my + 10,string_hash_to_newline("curH: " + string(global.curh) + " curV: " + string(global.curv) + " curR: " + string(global.curr)))

@@ -1,4 +1,4 @@
-/// @description  Pseudo Parent System
+/// @description
 
 global.playership = ds_list_create()
 

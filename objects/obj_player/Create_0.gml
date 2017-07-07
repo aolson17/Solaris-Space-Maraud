@@ -70,3 +70,18 @@ global.inv[i,1] = 0
 
 }
 
+start_x = x
+start_y = y
+hsp = 0
+vsp = 0
+cury = 0
+curx = 0
+crouch = 0
+
+jump = 0
+crouchJumpReady = 0
+
+force = 0
+
+
+
