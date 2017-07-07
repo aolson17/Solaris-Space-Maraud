@@ -52,9 +52,9 @@ sort_amount = ds_list_size(global.playership)-1
 
 for(i=0;i<=sort_amount;i++){// sort par_obj
 	with(ds_list_find_value(global.playership,i)){
-        
+        if other.i = 36{show_message("36 about to be dealt with")}
 		if object_get_parent(object_index)=par_obj{
-				
+				if i = 36{show_message("36 dealt with")}
 				
 			ds_list_delete(global.playership,other.i)
 			ds_list_insert(global.playership,other.sort_amount,id)

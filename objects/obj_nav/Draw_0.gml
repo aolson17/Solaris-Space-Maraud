@@ -57,6 +57,12 @@ if room != ShipBuilder{
 					if !object_is_ancestor(object_index,par_turret){
 						if object_index = obj_plat{
 							draw_sprite_ext(spr_plat,1,navLink.x+lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),navLink.y+lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),1,1,round(navLink.orbit_angle*10)/10,c_white,1)
+						}else if object_index = obj_stairs2{
+							draw_sprite_ext(sprite_index,image_index,navLink.x+lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),navLink.y+lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),1,1,90 + round(navLink.orbit_angle*10)/10,c_white,1)
+						}else if object_index = obj_stairs3{
+							draw_sprite_ext(sprite_index,image_index,navLink.x+lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),navLink.y+lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),1,1,180 + round(navLink.orbit_angle*10)/10,c_white,1)
+						}else if object_index = obj_stairs4{
+							draw_sprite_ext(sprite_index,image_index,navLink.x+lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),navLink.y+lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),1,1,270 + round(navLink.orbit_angle*10)/10,c_white,1)
 						}else{
 							draw_sprite_ext(sprite_index,image_index,navLink.x+lengthdir_x(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),navLink.y+lengthdir_y(point_distance(x, y, navLink.x, navLink.y),point_direction(navLink.x,navLink.y,x,y) + round(navLink.orbit_angle*10)/10),1,1,round(navLink.orbit_angle*10)/10,c_white,1)
 						}
