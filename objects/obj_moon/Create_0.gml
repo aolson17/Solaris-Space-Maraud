@@ -1,8 +1,0 @@
-/// @description Orbit
-orbit = instance_nearest(x,y,obj_planet)
-radius = distance_to_object(obj_planet)
-
-rotate = 1
-alarm[1] = 2
-
-
