@@ -1,7 +1,7 @@
 /// @description Movement
 if global.inship = 0 {
 
-if(mouse_x>x) {
+if(device_mouse_x_to_gui(0)>view_get_wport(0)/2) {
     face = 1
 } else {
     face = -1
@@ -253,8 +253,14 @@ image_speed = .2//hsp * .04
 }else {//When Controlling Ship
     sprite_index = spr_playertyping
     image_speed = .1
-    x = navLink.x
-    y = navLink.y
+	
+	with(navLink){
+		//other.rotated_navLink_x = scr_rotated(x)
+		//other.rotated_navLink_y = scr_rotated(y)
+	}
+	
+    //x = rotated_navLink_x
+   // y = rotated_navLink_y
 }
 
 ang = point_direction(x,y,navLink.x,navLink.y)

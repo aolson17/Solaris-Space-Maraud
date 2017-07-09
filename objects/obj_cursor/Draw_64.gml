@@ -2,9 +2,6 @@
 
 //draw_sprite(spr_cursor,0,mouse_x-view_xview[0], mouse_y-view_yview[0]) 
 
-mx = device_mouse_x_to_gui(0)
-my = device_mouse_y_to_gui(0)
-
 
 //draw_sprite_ext(spr_cursor,0, mx, my,__view_get( e__VW.WPort, 0 )/__view_get( e__VW.WView, 0 ),__view_get( e__VW.WPort, 0 )/__view_get( e__VW.WView, 0 ),0,c_white,1)
 
